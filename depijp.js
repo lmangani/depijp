@@ -23,7 +23,7 @@ var mesh = websocket(room, {perMessageDeflate: false })
 var pub = utils.uuid();
 var pubSocket = websocket(room+pub, {perMessageDeflate: false, binary: true})
 var hello = { uuid: uuid, room: room, pub: pub, type: 0 };
-mesh.write(Buffer.from(JSON.stringify(hello)));
+var start = mesh.write(Buffer.from(JSON.stringify(hello)));
 
 // Create Sub UUIDs
 var pipe = false;
@@ -37,11 +37,12 @@ mesh.on('data', function(data){
 		if (msg.pub == false) swarm.delete(msg.uuid);
 	} else {
 		var subSocket = websocket(room+msg.pub);
+		subSocket.on('end', () => { process.exit(); })
 		subSocket.pipe(process.stdout);
 		swarm.set(msg.uuid, subSocket);
 		mesh.write(Buffer.from(JSON.stringify(hello)));
 	}
-  } catch(e) { console.log(e);}
+  } catch(e) { console.log(e) }
 
 })
 

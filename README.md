@@ -23,13 +23,22 @@ depijp {secret_channel_key} {wss://your.server:port}
 ```
 
 #### Pipe Example
-Open a reading socket, writing to a file:
+##### Receiver
 ```
 depijp {secret_channel_key} > /tmp/mynewfile.txt
 ```
-Open a writing socket, reading from a file:
+##### Sender
 ```
 depijp {secret_channel_key} < /tmp/myoldfile.txt
 ```
 
+----------------
 
+##### PCAP Sender
+```
+tshark -w - | depijp {secret}
+```
+##### PCAP Receiver
+```
+depijp {secret} | tshark -r -
+```
