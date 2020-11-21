@@ -36,7 +36,7 @@ depijp {secret_channel_key} < /tmp/myoldfile.txt
 
 ##### PCAP Sender
 ```
-tshark -w - | depijp {secret}
+tshark -c 10 -w - | depijp {secret}
 ```
 ##### PCAP Receiver
 ```
